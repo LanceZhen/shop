@@ -50,7 +50,11 @@
             <!-- 订单发货开始 -->
             <!-- 如果订单未发货，展示发货表单 -->
             @if($order->ship_status === \App\Models\Order::SHIP_STATUS_PENDING)
-                @if($order->refund_status !== \App\Models\Order::REFUND_STATUS_SUCCESS)
+                @if($order->refund_status !== \App\Models\Order::REFUND_STATUS_SUCCESS //不是退款成功订单
+                    &&
+                    ($order->type !== \App\Models\Order::TYPE_CROWDFUNDING ||//不是众筹商品订单
+                      $order->items[0]->product->crowdfunding->status === \App\Models\CrowdfundingProduct::STATUS_SUCCESS)//众筹成功订单
+                    )
                 <tr>
                     <td colspan="4">
                         <form action="{{ route('admin.orders.ship', [$order->id]) }}" method="post" class="form-inline">

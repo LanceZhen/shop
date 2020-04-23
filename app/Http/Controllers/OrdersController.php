@@ -35,6 +35,7 @@ class OrdersController extends Controller
         $address = UserAddress::find($request->input('address_id'));
 
         // 如果用户提交了优惠码
+        $coupon = null;
         if ($code = $request->input('coupon_code')) {
             $coupon = CouponCode::where('code', $code)->first();
             if (!$coupon) {
@@ -164,6 +165,12 @@ class OrdersController extends Controller
         if (!$order->paid_at) {
             throw new InvalidRequestException('该订单未支付，不可退款');
         }
+
+        // 众筹订单不允许申请退款
+        if ($order->type === Order::TYPE_CROWDFUNDING) {
+            throw new InvalidRequestException('众筹订单不支持退款');
+        }
+
         // 判断订单退款状态是否正确
         if ($order->refund_status !== Order::REFUND_STATUS_PENDING) {
             throw new InvalidRequestException('该订单已经申请过退款，请勿重复申请');

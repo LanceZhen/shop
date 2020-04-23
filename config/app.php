@@ -231,4 +231,6 @@ return [
 
     //
     'order_ttl' => 1800,//单位：秒
+
+    'ngrok_url' => env('NGROK_URL'),
 ];

@@ -99,8 +99,6 @@
                                         <button class="btn btn-primary btn-add-to-cart">加入购物车</button>
                                 @endif
                                 <!-- 众筹商品下单按钮结束 -->
-
-                                <button class="btn btn-primary btn-add-to-cart">加入购物车</button>
                             </div>
                         </div>
                     </div>
