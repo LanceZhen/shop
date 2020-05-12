@@ -5,6 +5,43 @@ namespace App\Models;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\InstallmentItem
+ *
+ * @property int $id
+ * @property int $installment_id
+ * @property int $sequence
+ * @property float $base
+ * @property float $fee
+ * @property float|null $fine
+ * @property \Illuminate\Support\Carbon $due_date
+ * @property \Illuminate\Support\Carbon|null $paid_at
+ * @property string|null $payment_method
+ * @property string|null $payment_no
+ * @property string $refund_status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed $is_overdue
+ * @property-read mixed $total
+ * @property-read \App\Models\Installment $installment
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem whereBase($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem whereDueDate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem whereFee($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem whereFine($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem whereInstallmentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem wherePaidAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem wherePaymentMethod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem wherePaymentNo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem whereRefundStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem whereSequence($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\InstallmentItem whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class InstallmentItem extends Model
 {
     //

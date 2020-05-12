@@ -4,6 +4,40 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Installment
+ *
+ * @property int $id
+ * @property string $no
+ * @property int $user_id
+ * @property int $order_id
+ * @property float $total_amount
+ * @property int $count
+ * @property float $fee_rate
+ * @property float $fine_rate
+ * @property string $status
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\InstallmentItem[] $items
+ * @property-read int|null $items_count
+ * @property-read \App\Models\Order $order
+ * @property-read \App\Models\User $user
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment query()
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereFeeRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereFineRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereNo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereStatus($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereTotalAmount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Installment whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Installment extends Model
 {
     //

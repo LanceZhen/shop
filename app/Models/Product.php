@@ -38,6 +38,18 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $type
+ * @property int|null $category_id
+ * @property string $long_title
+ * @property-read \App\Models\Category|null $category
+ * @property-read \App\Models\CrowdfundingProduct $crowdfunding
+ * @property-read mixed $grouped_properties
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ProductProperty[] $properties
+ * @property-read int|null $properties_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product byIds($ids)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product whereLongTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Product whereType($value)
  */
 class Product extends Model
 {
@@ -99,6 +111,11 @@ class Product extends Model
             });
     }
 
+    public function scopeByIds($query, $ids)
+    {
+        return $query->whereIn('id', $ids)->orderByRaw(sprintf("FIND_IN_SET(id, '%s')", join(',', $ids)));
+    }
+
     public function toESArray()
     {
         // 只取出需要的字段
@@ -127,7 +144,10 @@ class Product extends Model
         });
         // 只取出需要的商品属性字段
         $arr['properties'] = $this->properties->map(function (ProductProperty $property) {
-            return Arr::only($property->toArray(), ['name', 'value']);
+            // 对应地增加一个 search_value 字段，用符号 : 将属性名和属性值拼接起来
+            return array_merge(Arr::only($property->toArray(), ['name', 'value']), [
+                'search_value' => $property->name.':'.$property->value,
+            ]);
         });
 
         return $arr;
