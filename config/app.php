@@ -231,6 +231,7 @@ return [
 
     //
     'order_ttl' => 1800,//单位：秒
+    'seckill_order_ttl' => 600,//10 分钟
 
     'ngrok_url' => env('NGROK_URL'),
 
