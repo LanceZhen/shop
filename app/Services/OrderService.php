@@ -13,6 +13,7 @@ use App\Models\ProductSku;
 use App\Exceptions\InvalidRequestException;
 use App\Jobs\CloseOrder;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Redis;
 
 class OrderService
 {
@@ -220,27 +221,25 @@ class OrderService
 
     /**
      * @param User $user
-     * @param UserAddress $address
+     * @param array $addressData
      * @param ProductSku $sku
      * @return mixed
      * @throws \Throwable
      */
-    public function seckill(User $user, UserAddress $address, ProductSku $sku)
+    public function seckill(User $user, array $addressData, ProductSku $sku)
     {
-        $order = \DB::transaction(function () use ($user, $address, $sku) {
-            // 更新此地址的最后使用时间
-            $address->update(['last_used_at' => Carbon::now()]);
+        $order = \DB::transaction(function () use ($user, $addressData, $sku) {
             // 扣减对应 SKU 库存
             if ($sku->decreaseStock(1) <= 0) {
                 throw new InvalidRequestException('该商品库存不足');
             }
             // 创建一个订单
             $order = new Order([
-                'address'      => [ // 将地址信息放入订单中
-                    'address'       => $address->full_address,
-                    'zip'           => $address->zip,
-                    'contact_name'  => $address->contact_name,
-                    'contact_phone' => $address->contact_phone,
+                'address'      => [ // address 字段直接从 $addressData 数组中读取
+                    'address'       => $addressData['province'].$addressData['city'].$addressData['district'].$addressData['address'],
+                    'zip'           => $addressData['zip'],
+                    'contact_name'  => $addressData['contact_name'],
+                    'contact_phone' => $addressData['contact_phone'],
                 ],
                 'remark'       => '',
                 'total_amount' => $sku->price,
@@ -258,6 +257,8 @@ class OrderService
             $item->product()->associate($sku->product_id);
             $item->productSku()->associate($sku);
             $item->save();
+
+            Redis::decr('seckill_sku_'.$sku->id);
 
             return $order;
         });
